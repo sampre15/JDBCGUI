@@ -324,6 +324,7 @@ public class GUI extends javax.swing.JFrame {
 
     private void btnConnectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConnectActionPerformed
         try {
+            //Verbindung aufmachen und die Werte von Text Fields einlesen
             con = DriverManager.getConnection("jdbc:mysql://"+txtServer.getText() + ":"+txtPort.getText()+"/1920_4ax_samantapreka_kosmetik", txtUsername.getText(), txtPassword.getText());
             // wenn ich mich mit dem Datenbank verbinde dann habe ich keine Moeglichkeit um mich
             // nocheinmal zu reconnecten also das mach keinen Sinn deshalb habe ich das button Connect,
@@ -354,12 +355,14 @@ public class GUI extends javax.swing.JFrame {
         try {
             // selektieren alles und executen
             prepSelect = con.prepareStatement("SELECT * FROM product");
+            //ResultSet speichern
             resSelect = prepSelect.executeQuery();              
             if(resSelect.next()){
                int id=resSelect.getInt("id");
                String name= resSelect.getString("name");
                String manifactured= resSelect.getString("manifactured");
                String produziert= resSelect.getString("produziert");
+               //Text Fiels befuellen
                txtId.setText(""+id);
                txtName.setText(name);
                txtManifactured.setText(manifactured);
@@ -375,6 +378,7 @@ public class GUI extends javax.swing.JFrame {
 
         // das umgekehrte vom connect button
         try {
+            //verbindung schliessen
             con.close();
             btnConnect.setEnabled(true);
             btnDisconnect.setEnabled(false);
@@ -457,6 +461,7 @@ public class GUI extends javax.swing.JFrame {
         String sql="INSERT INTO product(name,produziert,manifactured) VALUES (?,?,?)";
         try {
             prepInsertProduct=con.prepareStatement(sql);
+            //PreparedStatement Values einbinden
             prepInsertProduct.setString(1, txtName.getText());
             prepInsertProduct.setString(2, txtProduziert.getText());
             prepInsertProduct.setString(3, txtManifactured.getText());
@@ -517,7 +522,9 @@ public class GUI extends javax.swing.JFrame {
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
         String sql="Update product set name=?,produziert=?,manifactured=? where id=?";
         try {
+            //PreparedStatement 
             prepInsertProduct=con.prepareStatement(sql);
+            //PreparedStatement Werte einbinden
             prepInsertProduct.setString(1, txtName.getText());
             prepInsertProduct.setString(2, txtProduziert.getText());
             prepInsertProduct.setString(3, txtManifactured.getText());
